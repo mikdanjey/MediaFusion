@@ -2,55 +2,55 @@
 
 ###
 
-GET http://127.0.0.1:8000/manifest.json
+GET http://localhost:8000/manifest.json
 Accept: application/json
 
 ###
 
-GET http://127.0.0.1:8000/{{secret_str}}/manifest.json
+GET http://localhost:8000/manifest.json
 Accept: application/json
 
 ###
 
-GET http://127.0.0.1:8000/catalog/movie/tamil_hdrip.json
+GET http://localhost:8000/catalog/movie/tamil_hdrip.json
 Accept: application/json
 
 ###
 
-GET http://127.0.0.1:8000/catalog/movie/tamil_hdrip/skip=10.json
+GET http://localhost:8000/catalog/movie/tamil_hdrip/skip=10.json
 Accept: application/json
 
 ###
 
-GET http://127.0.0.1:8000/{{secret_str}}/catalog/series/tamil_series.json
+GET http://localhost:8000/catalog/series/tamil_series.json
 Accept: application/json
 
 ###
 
-GET http://127.0.0.1:8000/stream/movie/tt11468258.json
+GET http://localhost:8000/stream/movie/tt11468258.json
 Accept: application/json
 
 ###
 
-GET http://127.0.0.1:8000/{{secret_str}}/stream/movie/tt11468258.json
+GET http://localhost:8000/stream/movie/tt11468258.json
 Accept: application/json
 
 ###
 
-GET http://127.0.0.1:8000/{{secret_str}}/meta/series/mf39644457048721.json
+GET http://localhost:8000/meta/series/mf39644457048721.json
 Accept: application/json
 
 ###
 
-GET http://127.0.0.1:8000/meta/series/mf113075207220135:1:1.json
+GET http://localhost:8000/meta/series/mf113075207220135:1:1.json
 Accept: application/json
 
 ###
 
-GET http://127.0.0.1:8000/{{secret_str}}/stream/series/mf113075207220135:1:1.json
+GET http://localhost:8000/stream/series/mf113075207220135:1:1.json
 Accept: application/json
 
 ###
 
-GET http://127.0.0.1:8000/meta/movie/tt11468258.json
+GET http://localhost:8000/meta/movie/tt11468258.json
 Accept: application/json

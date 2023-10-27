@@ -52,6 +52,7 @@ no_cache_headers = {
 
 @app.on_event("startup")
 async def init_db():
+    print("Initializing database...")
     await database.init()
 
 @app.post("/start-scheduler")
