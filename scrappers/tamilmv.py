@@ -253,13 +253,13 @@ async def scrap_search_keyword(keyword, proxy_url=None):
 
 
 async def run_scraper(
-    language = None,
-    video_type = None,
-    pages = None,
-    start_page = None,
-    search_keyword = None,
+    language: str = None,
+    video_type: str = None,
+    pages: int = None,
+    start_page: int = None,
+    search_keyword: str = None,
     scrap_with_playwright: bool = None,
-    proxy_url = None,
+    proxy_url: str = None,
 ):
     await database.init()
     if search_keyword:
@@ -291,10 +291,10 @@ async def run_scraper(
 
 
 async def run_schedule_scrape(
-    pages = 1,
-    start_page = 1,
+    pages: int = 1,
+    start_page: int = 1,
     scrap_with_playwright: bool = None,
-    proxy_url = None,
+    proxy_url: str = None,
 ):
     for language in TAMIL_MV_LINKS:
         for video_type in TAMIL_MV_LINKS[language]:

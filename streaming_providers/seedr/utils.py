@@ -10,21 +10,21 @@ from streaming_providers.exceptions import ProviderException
 from utils.parser import clean_name
 
 
-def check_torrent_status(seedr, info_hash):
+def check_torrent_status(seedr, info_hash: str):
     """Checks if a torrent with a given info_hash is currently downloading."""
     folder_content = seedr.listContents()
     torrents = folder_content.get("torrents", [])
     return next((t for t in torrents if t["hash"] == info_hash), None)
 
 
-def check_folder_status(seedr, folder_name):
+def check_folder_status(seedr, folder_name: str):
     """Checks if a torrent with a given folder_name has completed downloading."""
     folder_content = seedr.listContents()
     folders = folder_content.get("folders", [])
     return next((f for f in folders if f["name"] == folder_name), None)
 
 
-def add_magnet_and_get_torrent(seedr, magnet_link, info_hash):
+def add_magnet_and_get_torrent(seedr, magnet_link: str, info_hash: str):
     """Adds a magnet link to Seedr and returns the corresponding torrent."""
     transfer = seedr.addTorrent(magnet_link)
 
@@ -58,7 +58,7 @@ def add_magnet_and_get_torrent(seedr, magnet_link, info_hash):
 
 
 def wait_for_torrent_to_complete(
-    seedr, info_hash, max_retries, retry_interval
+    seedr, info_hash: str, max_retries: int, retry_interval: int
 ):
     """Waits for a torrent with the given info_hash to complete downloading."""
     retries = 0
@@ -74,21 +74,21 @@ def wait_for_torrent_to_complete(
     raise ProviderException("Torrent not downloaded yet.", "torrent_not_downloaded.mp4")
 
 
-def get_file_details_from_folder(seedr, folder_id, filename):
+def get_file_details_from_folder(seedr, folder_id: int, filename: str):
     """Gets the details of the file in a given folder."""
     folder_content = seedr.listContents(folder_id)
     return [f for f in folder_content["files"] if f["name"] == filename][0]
 
 
 async def get_direct_link_from_seedr(
-    info_hash,
-    magnet_link,
-    user_data,
-    stream,
-    episode_data = None,
+    info_hash: str,
+    magnet_link: str,
+    user_data: UserData,
+    stream: Streams,
+    episode_data: Episode = None,
     max_retries=5,
     retry_interval=5,
-):
+) -> str:
     """Gets a direct download link from Seedr using a magnet link and token."""
     seedr = Seedr(token=user_data.streaming_provider.token)
 

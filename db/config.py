@@ -13,7 +13,7 @@ class Settings():
     mongo_uri = MONGO_URI
     git_rev = "beta"
     secret_key = SECRET_KEY
-    host_url = HOST_URL # "https://882b9915d0fe-mediafusion.baby-beamup.club"
+    host_url = HOST_URL
     logging_level = "INFO"
 
     # class Config:

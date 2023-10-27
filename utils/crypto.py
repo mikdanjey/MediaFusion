@@ -6,7 +6,7 @@ from db.config import settings
 from db.schemas import UserData
 
 
-def encrypt_user_data(user_data):
+def encrypt_user_data(user_data: UserData) -> str:
     data = user_data.model_dump_json(
         exclude_none=True, exclude_defaults=True, exclude_unset=True, round_trip=True
     ).encode("utf-8")
@@ -17,7 +17,7 @@ def encrypt_user_data(user_data):
     return encrypted_str
 
 
-def decrypt_user_data(secret_str | None = None):
+def decrypt_user_data(secret_str: str = None) -> UserData:
     if not secret_str:
         return UserData()
     try:

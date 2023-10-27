@@ -2,8 +2,8 @@ import json
 import logging
 from typing import Literal
 
-# from apscheduler.schedulers.asyncio import AsyncIOScheduler
-# from apscheduler.triggers.cron import CronTrigger
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
 from fastapi import FastAPI, Request, Response, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse, FileResponse, StreamingResponse
@@ -56,24 +56,24 @@ async def init_db():
     await database.init()
 
 
-# @app.on_event("startup")
-# async def start_scheduler():
-#     scheduler = AsyncIOScheduler()
-#     scheduler.add_job(
-#         tamil_blasters.run_schedule_scrape,
-#         CronTrigger(hour="*/3"),
-#         name="tamil_blasters",
-#     )
-#     scheduler.add_job(
-#         tamilmv.run_schedule_scrape, CronTrigger(hour="*/3"), name="tamilmv"
-#     )
-#     scheduler.start()
-#     app.state.scheduler = scheduler
+@app.on_event("startup")
+async def start_scheduler():
+    scheduler = AsyncIOScheduler()
+    scheduler.add_job(
+        tamil_blasters.run_schedule_scrape,
+        CronTrigger(hour="*/3"),
+        name="tamil_blasters",
+    )
+    scheduler.add_job(
+        tamilmv.run_schedule_scrape, CronTrigger(hour="*/3"), name="tamilmv"
+    )
+    scheduler.start()
+    app.state.scheduler = scheduler
 
 
-# @app.on_event("shutdown")
-# async def stop_scheduler():
-#     app.state.scheduler.shutdown(wait=False)
+@app.on_event("shutdown")
+async def stop_scheduler():
+    app.state.scheduler.shutdown(wait=False)
 
 
 @app.get("/", tags=["home"])
@@ -111,7 +111,7 @@ async def get_favicon():
 @app.get("/configure", tags=["configure"])
 @app.get("/{secret_str}/configure", tags=["configure"])
 async def configure(
-    response,
+    response: Response,
     request: Request,
     user_data: schemas.UserData = Depends(crypto.decrypt_user_data),
 ):
@@ -130,7 +130,7 @@ async def configure(
 @app.get("/manifest.json", tags=["manifest"])
 @app.get("/{secret_str}/manifest.json", tags=["manifest"])
 async def get_manifest(
-    response, user_data: schemas.UserData = Depends(crypto.decrypt_user_data)
+    response: Response, user_data: schemas.UserData = Depends(crypto.decrypt_user_data)
 ):
     response.headers.update(headers)
     response.headers.update(no_cache_headers)
@@ -173,10 +173,10 @@ async def get_manifest(
     tags=["catalog"],
 )
 async def get_catalog(
-    response,
+    response: Response,
     catalog_type: Literal["movie", "series"],
-    catalog_id,
-    skip = 0,
+    catalog_id: str,
+    skip: int = 0,
 ):
     response.headers.update(headers)
     metas = schemas.Metas()
@@ -191,10 +191,10 @@ async def get_catalog(
     response_model_exclude_none=True,
 )
 async def search_movie(
-    response,
+    response: Response,
     catalog_type: Literal["movie", "series"],
     catalog_id: Literal["mediafusion_search_movies", "mediafusion_search_series"],
-    search_query,
+    search_query: str,
 ):
     response.headers.update(headers)
     logging.debug("Searching for %s : %s", catalog_id, search_query)
@@ -215,7 +215,7 @@ async def search_movie(
     response_model_exclude_none=True,
 )
 async def get_meta(
-    catalog_type: Literal["movie", "series"], meta_id, response
+    catalog_type: Literal["movie", "series"], meta_id: str, response: Response
 ):
     response.headers.update(headers)
     if catalog_type == "movie":
@@ -255,11 +255,11 @@ async def get_meta(
 )
 async def get_streams(
     catalog_type: Literal["movie", "series"],
-    video_id,
-    response,
-    secret_str = None,
-    season = None,
-    episode = None,
+    video_id: str,
+    response: Response,
+    secret_str: str = None,
+    season: int = None,
+    episode: int = None,
     user_data: schemas.UserData = Depends(crypto.decrypt_user_data),
 ):
     response.headers.update(headers)
@@ -282,11 +282,11 @@ async def encrypt_user_data(user_data: schemas.UserData):
 
 @app.get("/{secret_str}/streaming_provider", tags=["streaming_provider"])
 async def streaming_provider_endpoint(
-    secret_str,
-    info_hash,
-    response,
-    season = None,
-    episode = None,
+    secret_str: str,
+    info_hash: str,
+    response: Response,
+    season: int = None,
+    episode: int = None,
 ):
     response.headers.update(headers)
     response.headers.update(no_cache_headers)
@@ -324,7 +324,7 @@ async def streaming_provider_endpoint(
 
 
 @app.get("/poster/{catalog_type}/{mediafusion_id}.jpg", tags=["poster"])
-async def get_poster(catalog_type: Literal["movie", "series"], mediafusion_id):
+async def get_poster(catalog_type: Literal["movie", "series"], mediafusion_id: str):
     # Query the MediaFusion data
     if catalog_type == "movie":
         mediafusion_data = await crud.get_movie_data_by_id(mediafusion_id)

@@ -8,27 +8,27 @@ from pymongo import IndexModel, ASCENDING
 
 
 class Episode(BaseModel):
-    episode_number
-    filename
-    size
-    file_index
+    episode_number: int
+    filename: str
+    size: int
+    file_index: int
 
 
 class Season(BaseModel):
-    season_number
+    season_number: int
     episodes: list[Episode]
 
 
 class Streams(Document):
-    id
-    torrent_name
-    size
+    id: str
+    torrent_name: str
+    size: int
     season: Optional[Season] = None
     filename: Optional[str] = None
     file_index: Optional[int] = None
     announce_list: list[str]
     languages: list[str]
-    source
+    source: str
     catalog: list[str]
     created_at: datetime = Field(default_factory=datetime.now)
     resolution: Optional[str]
@@ -39,7 +39,7 @@ class Streams(Document):
     seeders: Optional[int] = None
     cached: Optional[bool] = None
 
-    def get_episode(self, season_number, episode_number):
+    def get_episode(self, season_number: int, episode_number: int) -> Optional[Episode]:
         """
         Returns the Episode object for the given season and episode number.
         """
@@ -51,13 +51,13 @@ class Streams(Document):
 
 
 class MediaFusionMetaData(Document):
-    id
-    title
+    id: str
+    title: str
     year: Optional[int]
-    poster
-    background
+    poster: str
+    background: str
     streams: list[Link[Streams]]
-    type
+    type: str
 
     class Settings:
         is_root = True
@@ -68,8 +68,8 @@ class MediaFusionMetaData(Document):
 
 
 class MediaFusionMovieMetaData(MediaFusionMetaData):
-    type = "movie"
+    type: str = "movie"
 
 
 class MediaFusionSeriesMetaData(MediaFusionMetaData):
-    type = "series"
+    type: str = "series"

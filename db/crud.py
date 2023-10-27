@@ -19,8 +19,8 @@ from utils.parser import parse_stream_data, get_catalogs, search_imdb
 
 
 async def get_meta_list(
-    catalog_type, catalog, skip = 0, limit = 25
-) :
+    catalog_type: str, catalog: str, skip: int = 0, limit: int = 25
+) -> list[schemas.Meta]:
     if catalog_type == "movie":
         meta_class = MediaFusionMovieMetaData
     else:
@@ -44,22 +44,22 @@ async def get_meta_list(
 
 
 async def get_movie_data_by_id(
-    movie_id, fetch_links: bool = False
-):
+    movie_id: str, fetch_links: bool = False
+) -> Optional[MediaFusionMovieMetaData]:
     movie_data = await MediaFusionMovieMetaData.get(movie_id, fetch_links=fetch_links)
     return movie_data
 
 
 async def get_series_data_by_id(
-    series_id, fetch_links: bool = False
-):
+    series_id: str, fetch_links: bool = False
+) -> Optional[MediaFusionSeriesMetaData]:
     series_data = await MediaFusionSeriesMetaData.get(
         series_id, fetch_links=fetch_links
     )
     return series_data
 
 
-async def get_movie_streams(user_data, secret_str, video_id):
+async def get_movie_streams(user_data, secret_str: str, video_id: str) -> list[Stream]:
     movie_data = await get_movie_data_by_id(video_id, True)
     if not movie_data:
         return []
@@ -68,8 +68,8 @@ async def get_movie_streams(user_data, secret_str, video_id):
 
 
 async def get_series_streams(
-    user_data, secret_str, video_id, season, episode
-):
+    user_data, secret_str: str, video_id: str, season: int, episode: int
+) -> list[Stream]:
     series_data = await get_series_data_by_id(video_id, True)
     if not series_data:
         return []
@@ -83,7 +83,7 @@ async def get_series_streams(
     )
 
 
-async def get_movie_meta(meta_id):
+async def get_movie_meta(meta_id: str):
     movie_data = await get_movie_data_by_id(meta_id)
 
     if not movie_data:
@@ -100,7 +100,7 @@ async def get_movie_meta(meta_id):
     }
 
 
-async def get_series_meta(meta_id):
+async def get_series_meta(meta_id: str):
     series_data = await get_series_data_by_id(meta_id, True)
 
     if not series_data:
@@ -119,7 +119,7 @@ async def get_series_meta(meta_id):
 
     # Loop through streams to populate the videos list
     for stream in series_data.streams:
-        stream
+        stream: Streams
         if stream.season:  # Ensure the stream has season data
             for episode in stream.season.episodes:
                 metadata["meta"]["videos"].append(
@@ -310,7 +310,7 @@ async def save_series_metadata(metadata: dict):
     logging.info("Updated series %s", series.title)
 
 
-async def process_search_query(search_query, catalog_type):
+async def process_search_query(search_query: str, catalog_type: str) -> dict:
     if catalog_type == "movie":
         meta_class = MediaFusionMovieMetaData
     else:
@@ -343,6 +343,6 @@ async def process_search_query(search_query, catalog_type):
     return {"metas": metas}
 
 
-async def get_stream_by_info_hash(info_hash):
+async def get_stream_by_info_hash(info_hash: str) -> Streams:
     stream = await Streams.get(info_hash)
     return stream

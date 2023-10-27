@@ -10,14 +10,14 @@ import PTN
 
 
 def get_direct_link_from_debridlink(
-    info_hash,
-    magnet_link,
-    user_data,
-    stream,
-    episode_data = None,
+    info_hash: str,
+    magnet_link: str,
+    user_data: UserData,
+    stream: Streams,
+    episode_data: Episode = None,
     max_retries=5,
     retry_interval=5,
-):
+) -> str:
     dl_client = DebridLink(encoded_token=user_data.streaming_provider.token)
     filename = episode_data.filename if episode_data else stream.filename
 
@@ -37,8 +37,8 @@ def get_direct_link_from_debridlink(
 
 
 def check_existing_torrent(
-    dl_client: DebridLink, info_hash, episode_data | None, max_retries, retry_interval
-):
+    dl_client: DebridLink, info_hash: str, episode_data: Episode, max_retries: int, retry_interval: int
+) -> str:
     """Check if the torrent is already in torrent list and return the direct link if available."""
     retries = 0
 
@@ -61,7 +61,7 @@ def check_existing_torrent(
     raise ProviderException("Torrent not downloaded yet.", "torrent_not_downloaded.mp4")
 
 
-def wait_for_torrent_download(dl_client, torrent_id, episode_data | None, max_retries, retry_interval):
+def wait_for_torrent_download(dl_client, torrent_id: str, episode_data: Episode, max_retries: int, retry_interval: int) -> str:
     """Wait for the torrent to be downloaded and return the direct link."""
     retries = 0
     while retries < max_retries:
@@ -82,7 +82,7 @@ def wait_for_torrent_download(dl_client, torrent_id, episode_data | None, max_re
     raise ProviderException("Torrent not downloaded yet.", "torrent_not_downloaded.mp4")
 
 
-def get_direct_link(torrent_info, episode_data | None):
+def get_direct_link(torrent_info, episode_data: Episode) -> str:
     if episode_data:
         selected_file = select_episode_file(torrent_info["files"], episode_data.episode_number, "name")
     else:
@@ -91,7 +91,7 @@ def get_direct_link(torrent_info, episode_data | None):
     return selected_file["downloadUrl"]
 
 
-def select_episode_file(torrent_files: list, episode, file_name_key):
+def select_episode_file(torrent_files: list, episode: int, file_name_key: str) -> dict:
     """Select the file with the specified episode number."""
 
     for file in torrent_files:

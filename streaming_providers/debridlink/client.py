@@ -26,13 +26,13 @@ class DebridLink:
 
     def _make_request(
         self,
-        method,
-        url,
+        method: str,
+        url: str,
         data=None,
         params=None,
         is_return_none=False,
         is_expected_to_fail=False,
-    ):
+    ) -> dict:
         if method == "GET":
             response = requests.get(url, params=params, headers=self.headers)
         elif method == "POST":
@@ -85,12 +85,12 @@ class DebridLink:
             }
 
     @staticmethod
-    def encode_token_data(client_id, code):
+    def encode_token_data(client_id: str, code: str):
         token = f"{client_id}:{code}"
         return b64encode(str(token).encode()).decode()
 
     @staticmethod
-    def decode_token_str(token)[str, str]:
+    def decode_token_str(token: str) -> dict[str, str]:
         try:
             client_id, code = b64decode(token).decode().split(":")
         except ValueError:
@@ -170,7 +170,7 @@ class DebridLink:
             "GET", f"{self.OAUTH_URL}/revoke", is_return_none=True
         )
 
-    def get_available_torrent(self, info_hash)[str, Any] | None:
+    def get_available_torrent(self, info_hash: str) -> dict[str, Any]:
         torrent_list_response = self.get_user_torrent_list()
         if "error" in torrent_list_response:
             raise ProviderException(

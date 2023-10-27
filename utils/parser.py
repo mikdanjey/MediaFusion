@@ -16,11 +16,11 @@ ia = Cinemagoer()
 
 def parse_stream_data(
     streams: list[Streams],
-    user_data,
-    secret_str,
-    season = None,
-    episode = None,
-):
+    user_data: UserData,
+    secret_str: str,
+    season: int = None,
+    episode: int = None,
+) -> list[Stream]:
     stream_list = []
 
     # filter out streams that are not available in the user's selected catalog
@@ -97,13 +97,13 @@ def parse_stream_data(
     return stream_list
 
 
-def clean_name(name, replace = " "):
+def clean_name(name: str, replace: str = " ") -> str:
     # Only allow alphanumeric characters, spaces, and `.,;:_~-[]()`
     cleaned_name = re.sub(r"[^a-zA-Z0-9 .,;:_~\-()\[\]]", replace, name)
     return cleaned_name
 
 
-def convert_bytes_to_readable(size_bytes):
+def convert_bytes_to_readable(size_bytes: int) -> str:
     """
     Convert a size in bytes into a more human-readable format.
     """
@@ -116,7 +116,7 @@ def convert_bytes_to_readable(size_bytes):
     return f"{s} {size_name[i]}"
 
 
-def get_catalogs(catalog, languages: list[str]):
+def get_catalogs(catalog: str, languages: list[str]) -> list[str]:
     base_catalogs = ["hdrip", "tcrip", "dubbed", "series"]
     base_catalog = catalog.split("_")[1]
 
@@ -127,7 +127,7 @@ def get_catalogs(catalog, languages: list[str]):
     return [f"{lang.lower()}_{base_catalog}" for lang in languages]
 
 
-def search_imdb(title, year, retry = 5):
+def search_imdb(title: str, year: int, retry: int = 5) -> dict:
     try:
         result = ia.search_movie(f"{title} {year}")
     except IMDbDataAccessError:

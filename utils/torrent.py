@@ -23,7 +23,7 @@ TRACKERS = [
 ]
 
 
-def extract_torrent_metadata(content):
+def extract_torrent_metadata(content) -> dict:
     try:
         torrent_data = bencodepy.decode(content)
 
@@ -82,7 +82,7 @@ def extract_torrent_metadata(content):
         return {}
 
 
-def convert_info_hash_to_magnet(info_hash, trackers: list[str]):
+def convert_info_hash_to_magnet(info_hash: str, trackers: list[str]) -> str:
     magnet_link = f"magnet:?xt=urn:btih:{info_hash}"
     for tracker in trackers or TRACKERS:
         encoded_tracker = quote(tracker, safe="")

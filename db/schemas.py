@@ -6,18 +6,18 @@ from utils.const import CATALOG_ID_DATA
 
 
 class Catalog(BaseModel):
-    id
-    name
-    type
+    id: str
+    name: str
+    type: str
 
 
 class Meta(BaseModel):
-    id = Field(alias="_id")
-    name = Field(alias="title")
-    type = Field(default="movie")
-    poster
-    background
-    videos: list | None = None
+    id: str = Field(alias="_id")
+    name: str = Field(alias="title")
+    type: str = Field(default="movie")
+    poster: str
+    background: str
+    videos: list = None
 
 
 class MetaItem(BaseModel):
@@ -29,12 +29,12 @@ class Metas(BaseModel):
 
 
 class Stream(BaseModel):
-    name
-    description
-    infoHash | None = None
-    fileIdx | None = None
-    url | None = None
-    behaviorHints: dict[str, Any] | None = None
+    name: str
+    description: str
+    infoHash: str = None
+    fileIdx: int = None
+    url: str = None
+    behaviorHints: dict[str, Any] = None
 
 
 class Streams(BaseModel):
@@ -43,14 +43,14 @@ class Streams(BaseModel):
 
 class StreamingProvider(BaseModel):
     service: Literal["realdebrid", "seedr", "debridlink"]
-    token
+    token: str
 
     class Config:
         extra = "ignore"
 
 
 class UserData(BaseModel):
-    streaming_provider: StreamingProvider | None = None
+    streaming_provider: StreamingProvider = None
     selected_catalogs: list[str] = Field(default=CATALOG_ID_DATA)
 
     class Config:
@@ -58,8 +58,8 @@ class UserData(BaseModel):
 
 
 class AuthorizeData(BaseModel):
-    device_code
+    device_code: str
 
 
 class MetaIdProjection(BaseModel):
-    id = Field(alias="_id")
+    id: str = Field(alias="_id")
