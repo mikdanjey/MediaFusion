@@ -8,6 +8,8 @@ from db.models import MediaFusionSeriesMetaData, MediaFusionMovieMetaData, Strea
 async def init():
     # Create Motor client
     client = motor.motor_asyncio.AsyncIOMotorClient(settings.mongo_uri)
-
+    database = client[settings.database]
     # Init beanie with the Product document class
-    await init_beanie(database=client.mediafusion, document_models=[MediaFusionMovieMetaData, MediaFusionSeriesMetaData, Streams])
+    await init_beanie(database, document_models=[MediaFusionMovieMetaData, MediaFusionSeriesMetaData, Streams])
+
+
