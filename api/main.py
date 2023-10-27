@@ -57,7 +57,7 @@ async def init_db():
 
 @app.post("/start-scheduler")
 async def start_scheduler_endpoint(background_tasks: BackgroundTasks):
-    background_tasks.add_task(start_scheduling)
+    background_tasks.add_task(start_scheduler)
     return {"status": "Scheduler started"}
 
 
