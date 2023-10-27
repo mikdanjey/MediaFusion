@@ -9,7 +9,7 @@ from db.models import MediaFusionMetaData
 ia = Cinemagoer()
 
 
-async def create_poster(mediafusion_data: MediaFusionMetaData) -> BytesIO:
+async def create_poster(mediafusion_data: MediaFusionMetaData):
     response = requests.get(mediafusion_data.poster, timeout=10)
     response.raise_for_status()
 
@@ -46,7 +46,7 @@ async def create_poster(mediafusion_data: MediaFusionMetaData) -> BytesIO:
 
 def add_elements_to_poster(
     image: Image.Image, imdb_rating: float = None
-) -> Image.Image:
+):
     draw = ImageDraw.Draw(image)
     margin = 10
 

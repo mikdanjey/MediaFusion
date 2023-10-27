@@ -48,8 +48,8 @@ async def get_page_content(page, url):
 async def download_and_save_torrent(
     torrent_element,
     metadata: dict,
-    media_type: str,
-    page_link: str,
+    media_type,
+    page_link,
     scraper=None,
     page=None,
 ):

@@ -9,10 +9,10 @@ from streaming_providers.realdebrid.client import RealDebrid
 
 def wait_for_status(
     rd_client,
-    torrent_id: str,
-    target_status: str,
-    max_retries: int,
-    retry_interval: int,
+    torrent_id,
+    target_status,
+    max_retries,
+    retry_interval,
 ):
     """Wait for the torrent to reach a particular status."""
     retries = 0
@@ -28,14 +28,14 @@ def wait_for_status(
 
 
 def get_direct_link_from_realdebrid(
-    info_hash: str,
-    magnet_link: str,
-    user_data: UserData,
-    stream: Streams,
-    episode_data: Episode = None,
+    info_hash,
+    magnet_link,
+    user_data,
+    stream,
+    episode_data = None,
     max_retries=5,
     retry_interval=5,
-) -> str:
+):
     rd_client = RealDebrid(encoded_token=user_data.streaming_provider.token)
     filename = episode_data.filename if episode_data else stream.filename
 
@@ -86,8 +86,8 @@ def get_direct_link_from_realdebrid(
 
 
 def order_streams_by_instant_availability_and_date(
-    streams: list[Streams], user_data: UserData
-) -> list[Streams]:
+    streams: list[Streams], user_data
+):
     """Orders the streams by instant availability."""
     rd_client = RealDebrid(encoded_token=user_data.streaming_provider.token)
     for stream in streams:
@@ -108,7 +108,7 @@ def order_streams_by_instant_availability_and_date(
     )
 
 
-def select_file_index_from_torrent(torrent_info: dict[str, Any], filename: str) -> int:
+def select_file_index_from_torrent(torrent_info: dict[str, Any], filename):
     """Select the file index from the torrent info."""
     selected_files = [file for file in torrent_info["files"] if file["selected"] == 1]
     for index, file in enumerate(selected_files):
