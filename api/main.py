@@ -101,6 +101,7 @@ async def run_tamilmv_job():
 async def get_home(request: Request):
     with open("resources/manifest.json") as file:
         manifest = json.load(file)
+    await database.init()
     return TEMPLATES.TemplateResponse(
         "html/home.html",
         {
