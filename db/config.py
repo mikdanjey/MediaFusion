@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     mongo_uri: str
     git_rev: str = "beta"
     secret_key: str
-    host_url: str = "https://media-fusion.vercel.app"
+    host_url: str
     logging_level: str = "INFO"
 
     class Config:
