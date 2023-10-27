@@ -22,3 +22,4 @@ playwright==1.38.0
 playwright-stealth
 pillow
 httpx
+load_dotenv
