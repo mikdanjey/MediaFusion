@@ -16,7 +16,6 @@ motor = "*"
 pymongo = { extras = ["srv"], version = "*" }
 dnspython = "*"
 jinja2 = "*"
-apscheduler = "*"
 python-dateutil = "*"
 bencodepy = "*"
 pydantic-settings = "*"
