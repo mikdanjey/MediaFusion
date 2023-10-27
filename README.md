@@ -86,3 +86,5 @@
 - [beanie](https://roman-right.github.io/beanie/)
 - [parse-torrent-title](https://github.com/platelminto/parse-torrent-title)
 - [torrentio-scraper Stremio Add-on](https://github.com/TheBeastLT/torrentio-scraper)
+
+pipenv run uvicorn --host 0.0.0.0 --port 8000 api.main:app
