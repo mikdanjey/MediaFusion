@@ -19,7 +19,7 @@ from scrappers.helpers import (
     download_and_save_torrent,
 )
 
-HOMEPAGE = "https://www.1tamilblasters.art"
+HOMEPAGE = "https://www.1tamilblasters.cfd"
 TAMIL_BLASTER_LINKS = {
     "tamil": {
         "hdrip": "7-tamil-new-movies-hdrips-bdrips-dvdrips-hdtv",
