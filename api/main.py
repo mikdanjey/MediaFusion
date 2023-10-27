@@ -4,7 +4,7 @@ from typing import Literal
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
-from fastapi import FastAPI, Request, Response, Depends, HTTPException
+from fastapi import FastAPI, Request, Response, Depends, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse, FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
@@ -55,36 +55,29 @@ no_cache_headers = {
 async def init_db():
     await database.init()
 
-
-@app.get("/scrape/tamil_blasters")
-async def scrape_tamil_blasters():
-    result = await tamil_blasters.run_schedule_scrape()
-    return {"status": "completed", "result": result}
-
-@app.get("/scrape/tamilmv")
-async def scrape_tamilmv():
-    result = await tamilmv.run_schedule_scrape()
-    return {"status": "completed", "result": result}    
+@app.post("/start-scheduler")
+async def start_scheduler_endpoint(background_tasks: BackgroundTasks):
+    background_tasks.add_task(start_scheduling)
+    return {"status": "Scheduler started"}
 
 
-# @app.on_event("startup")
-# async def start_scheduler():
-#     scheduler = AsyncIOScheduler()
-#     scheduler.add_job(
-#         tamil_blasters.run_schedule_scrape,
-#         CronTrigger(hour="*/3"),
-#         name="tamil_blasters",
-#     )
-#     scheduler.add_job(
-#         tamilmv.run_schedule_scrape, CronTrigger(hour="*/3"), name="tamilmv"
-#     )
-#     scheduler.start()
-#     app.state.scheduler = scheduler
+async def start_scheduler():
+    scheduler = AsyncIOScheduler()
+    scheduler.add_job(
+        tamil_blasters.run_schedule_scrape,
+        CronTrigger(hour="*/3"),
+        name="tamil_blasters",
+    )
+    scheduler.add_job(
+        tamilmv.run_schedule_scrape, CronTrigger(hour="*/3"), name="tamilmv"
+    )
+    scheduler.start()
+    app.state.scheduler = scheduler
 
 
-# @app.on_event("shutdown")
-# async def stop_scheduler():
-#     app.state.scheduler.shutdown(wait=False)
+@app.on_event("shutdown")
+async def stop_scheduler():
+    app.state.scheduler.shutdown(wait=False)
 
 
 @app.get("/", tags=["home"])
