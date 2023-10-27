@@ -60,11 +60,11 @@ async def start_jobs_endpoint(background_tasks: BackgroundTasks):
     background_tasks.add_task(run_tamilmv_job)
     return {"status": "Jobs started"}
 
-def run_tamil_blasters_job():
+async def run_tamil_blasters_job():
     # Assuming your task is a coroutine, otherwise remove 'await'
     await tamil_blasters.run_schedule_scrape()
 
-def run_tamilmv_job():
+async def run_tamilmv_job():
     # Assuming your task is a coroutine, otherwise remove 'await'
     await tamilmv.run_schedule_scrape()
 
