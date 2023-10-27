@@ -22,4 +22,5 @@ playwright==1.38.0
 playwright-stealth
 pillow
 httpx
+apscheduler
 load_dotenv
