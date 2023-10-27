@@ -2,8 +2,8 @@ import json
 import logging
 from typing import Literal
 
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from apscheduler.triggers.cron import CronTrigger
+# from apscheduler.schedulers.asyncio import AsyncIOScheduler
+# from apscheduler.triggers.cron import CronTrigger
 from fastapi import FastAPI, Request, Response, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse, FileResponse, StreamingResponse
@@ -56,24 +56,24 @@ async def init_db():
     await database.init()
 
 
-@app.on_event("startup")
-async def start_scheduler():
-    scheduler = AsyncIOScheduler()
-    scheduler.add_job(
-        tamil_blasters.run_schedule_scrape,
-        CronTrigger(hour="*/3"),
-        name="tamil_blasters",
-    )
-    scheduler.add_job(
-        tamilmv.run_schedule_scrape, CronTrigger(hour="*/3"), name="tamilmv"
-    )
-    scheduler.start()
-    app.state.scheduler = scheduler
+# @app.on_event("startup")
+# async def start_scheduler():
+#     scheduler = AsyncIOScheduler()
+#     scheduler.add_job(
+#         tamil_blasters.run_schedule_scrape,
+#         CronTrigger(hour="*/3"),
+#         name="tamil_blasters",
+#     )
+#     scheduler.add_job(
+#         tamilmv.run_schedule_scrape, CronTrigger(hour="*/3"), name="tamilmv"
+#     )
+#     scheduler.start()
+#     app.state.scheduler = scheduler
 
 
-@app.on_event("shutdown")
-async def stop_scheduler():
-    app.state.scheduler.shutdown(wait=False)
+# @app.on_event("shutdown")
+# async def stop_scheduler():
+#     app.state.scheduler.shutdown(wait=False)
 
 
 @app.get("/", tags=["home"])
