@@ -50,35 +50,23 @@ no_cache_headers = {
     "Expires": "0",
 }
 
-
 @app.on_event("startup")
 async def init_db():
     await database.init()
 
-@app.post("/start-scheduler")
-async def start_scheduler_endpoint(background_tasks: BackgroundTasks):
-    background_tasks.add_task(start_scheduler)
-    return {"status": "Scheduler started"}
+@app.post("/start-jobs")
+async def start_jobs_endpoint(background_tasks: BackgroundTasks):
+    background_tasks.add_task(run_tamil_blasters_job)
+    background_tasks.add_task(run_tamilmv_job)
+    return {"status": "Jobs started"}
 
+def run_tamil_blasters_job():
+    # Assuming your task is a coroutine, otherwise remove 'await'
+    await tamil_blasters.run_schedule_scrape()
 
-async def start_scheduler():
-    scheduler = AsyncIOScheduler()
-    scheduler.add_job(
-        tamil_blasters.run_schedule_scrape,
-        CronTrigger(hour="*/3"),
-        name="tamil_blasters",
-    )
-    scheduler.add_job(
-        tamilmv.run_schedule_scrape, CronTrigger(hour="*/3"), name="tamilmv"
-    )
-    scheduler.start()
-    app.state.scheduler = scheduler
-
-
-@app.on_event("shutdown")
-async def stop_scheduler():
-    app.state.scheduler.shutdown(wait=False)
-
+def run_tamilmv_job():
+    # Assuming your task is a coroutine, otherwise remove 'await'
+    await tamilmv.run_schedule_scrape()
 
 @app.get("/", tags=["home"])
 async def get_home(request: Request):
