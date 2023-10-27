@@ -19,7 +19,7 @@ from scrappers.helpers import (
     download_and_save_torrent,
 )
 
-HOMEPAGE = "https://www.1tamilmv.prof"
+HOMEPAGE = "https://www.1tamilmv.phd"
 TAMIL_MV_LINKS = {
     "tamil": {
         "hdrip": [
