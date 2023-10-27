@@ -21,7 +21,7 @@
 ## :rocket: Installation
 
 1. Install Stremio from [here](https://www.stremio.com/downloads).
-2. Navigate to [Media Fusion](https://882b9915d0fe-mediafusion.baby-beamup.club) and click on the 'Configure Add-on' button.
+2. Navigate to [Media Fusion]() and click on the 'Configure Add-on' button.
 
 ## :hammer_and_wrench: Development
 
