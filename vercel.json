@@ -4,5 +4,10 @@
             "source": "/(.*)",
             "destination": "/api/main"
         }
-    ]
+    ],
+    "functions": {
+        "api/**/*.py": {
+            "runtime": "vercel/python@3.11"
+        }
+    }
 }
