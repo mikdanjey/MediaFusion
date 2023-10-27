@@ -52,8 +52,12 @@ no_cache_headers = {
 
 @app.on_event("startup")
 async def init_db():
-    print("Initializing database...")
-    await database.init()
+    try:
+        print("Initializing database...")
+        await database.init()
+    except Exception as e:
+        print(f"Error during database initialization: {e}")
+
 
 @app.post("/start-scheduler")
 async def start_scheduler_endpoint(background_tasks: BackgroundTasks):
